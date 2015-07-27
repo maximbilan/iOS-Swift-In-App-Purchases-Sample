@@ -16,10 +16,8 @@ class InAppPurchase : NSObject, SKProductsRequestDelegate, SKPaymentTransactionO
 	let kInAppProductRestoredNotification  = "InAppProductRestoredNotification"
 	let kInAppPurchasingErrorNotification  = "InAppPurchasingErrorNotification"
 	
-	let unlockTestInAppPurchase1 = "Test In-App-Purchase 1"
 	var unlockTestInAppPurchase1ProductId = "com.testing.iap1"
-	
-	let kUnlockTestInAppPurchase1 = "unlockUnlockTestInAppPurchase1"
+	var unlockTestInAppPurchase2ProductId = "com.testing.iap2"
 	
 	class var sharedInstance : InAppPurchase {
 		struct Static {
@@ -38,28 +36,19 @@ class InAppPurchase : NSObject, SKProductsRequestDelegate, SKPaymentTransactionO
 		SKPaymentQueue.defaultQueue().addTransactionObserver(self)
 	}
 	
-	func buyUnlockTestInAppPurchase1() {
-		if SKPaymentQueue.canMakePayments() {
-			var productID: NSSet = NSSet(object: unlockTestInAppPurchase1ProductId)
-			var productsRequest: SKProductsRequest = SKProductsRequest(productIdentifiers: productID as Set<NSObject>)
-			productsRequest.delegate = self
-			productsRequest.start()
-			println("Fething Products")
-		}
-		else {
-			println("Сan't make purchases")
-			NSNotificationCenter.defaultCenter().postNotificationName(kInAppPurchasingErrorNotification, object: NSLocalizedString("CANT_MAKE_PURCHASES", comment: "Can't make purchases"))
-		}
+	func buyProduct(product: SKProduct) {
+		println("Sending the Payment Request to Apple")
+		var payment = SKPayment(product: product)
+		SKPaymentQueue.defaultQueue().addPayment(payment)
 	}
 	
 	func restoreTransactions() {
 		SKPaymentQueue.defaultQueue().restoreCompletedTransactions()
 	}
 	
-	func buyProduct(product: SKProduct) {
-		println("Sending the Payment Request to Apple")
-		var payment = SKPayment(product: product)
-		SKPaymentQueue.defaultQueue().addPayment(payment)
+	func request(request: SKRequest!, didFailWithError error: NSError!) {
+		println("Error %@ \(error)")
+		NSNotificationCenter.defaultCenter().postNotificationName(kInAppPurchasingErrorNotification, object: error.description)
 	}
 	
 	func productsRequest(request: SKProductsRequest, didReceiveResponse response: SKProductsResponse) {
@@ -68,24 +57,14 @@ class InAppPurchase : NSObject, SKProductsRequestDelegate, SKPaymentTransactionO
 		if count > 0 {
 			var validProducts = response.products
 			var validProduct: SKProduct = response.products[0] as! SKProduct
-			if validProduct.productIdentifier == unlockTestInAppPurchase1ProductId {
-				println(validProduct.localizedTitle)
-				println(validProduct.localizedDescription)
-				println(validProduct.price)
-				buyProduct(validProduct);
-			}
-			else {
-				println(validProduct.productIdentifier)
-			}
+			println(validProduct.localizedTitle)
+			println(validProduct.localizedDescription)
+			println(validProduct.price)
+			buyProduct(validProduct);
 		}
 		else {
 			println("No products")
 		}
-	}
-	
-	func request(request: SKRequest!, didFailWithError error: NSError!) {
-		println("Error %@ \(error)")
-		NSNotificationCenter.defaultCenter().postNotificationName(kInAppPurchasingErrorNotification, object: error.description)
 	}
 	
 	func paymentQueue(queue: SKPaymentQueue!, updatedTransactions transactions: [AnyObject]!) {
@@ -96,7 +75,7 @@ class InAppPurchase : NSObject, SKProductsRequestDelegate, SKPaymentTransactionO
 				switch trans.transactionState {
 				case .Purchased:
 					println("Product Purchased")
-					unlockCustomizeContent()
+					savePurchasedProductIdentifier(trans.payment.productIdentifier)
 					SKPaymentQueue.defaultQueue().finishTransaction(transaction as! SKPaymentTransaction)
 					NSNotificationCenter.defaultCenter().postNotificationName(kInAppProductPurchasedNotification, object: nil)
 					break
@@ -109,7 +88,7 @@ class InAppPurchase : NSObject, SKProductsRequestDelegate, SKPaymentTransactionO
 					
 				case .Restored:
 					println("Product Restored")
-					unlockCustomizeContent()
+					savePurchasedProductIdentifier(trans.payment.productIdentifier)
 					SKPaymentQueue.defaultQueue().finishTransaction(transaction as! SKPaymentTransaction)
 					NSNotificationCenter.defaultCenter().postNotificationName(kInAppProductRestoredNotification, object: nil)
 					break
@@ -121,8 +100,30 @@ class InAppPurchase : NSObject, SKProductsRequestDelegate, SKPaymentTransactionO
 		}
 	}
 	
-	func unlockCustomizeContent() {
-		NSUserDefaults.standardUserDefaults().setObject(kUnlockTestInAppPurchase1, forKey: kUnlockTestInAppPurchase1)
+	func savePurchasedProductIdentifier(productIdentifier: String!) {
+		NSUserDefaults.standardUserDefaults().setObject(productIdentifier, forKey: productIdentifier)
 		NSUserDefaults.standardUserDefaults().synchronize()
+	}
+	
+	func unlockProduct(productIdentifier: String!) {
+		if SKPaymentQueue.canMakePayments() {
+			var productID: NSSet = NSSet(object: productIdentifier)
+			var productsRequest: SKProductsRequest = SKProductsRequest(productIdentifiers: productID as Set<NSObject>)
+			productsRequest.delegate = self
+			productsRequest.start()
+			println("Fething Products")
+		}
+		else {
+			println("Сan't make purchases")
+			NSNotificationCenter.defaultCenter().postNotificationName(kInAppPurchasingErrorNotification, object: NSLocalizedString("CANT_MAKE_PURCHASES", comment: "Can't make purchases"))
+		}
+	}
+	
+	func buyUnlockTestInAppPurchase1() {
+		unlockProduct(unlockTestInAppPurchase1ProductId)
+	}
+	
+	func buyUnlockTestInAppPurchase2() {
+		unlockProduct(unlockTestInAppPurchase2ProductId)
 	}
 }

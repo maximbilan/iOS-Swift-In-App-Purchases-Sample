@@ -25,6 +25,7 @@ class ViewController: UIViewController {
 	}
 
 	@IBAction func unlockTestInAppPurchase2(sender: UIButton) {
+		InAppPurchase.sharedInstance.buyUnlockTestInAppPurchase2()
 	}
 	
 	@IBAction func restorePurchases(sender: UIButton) {

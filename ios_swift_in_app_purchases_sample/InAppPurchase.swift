@@ -91,8 +91,8 @@ class InAppPurchase : NSObject, SKProductsRequestDelegate, SKPaymentTransactionO
 	func paymentQueue(queue: SKPaymentQueue!, updatedTransactions transactions: [AnyObject]!) {
 		println("Received Payment Transaction Response from Apple");
 		
-		for transaction:AnyObject in transactions {
-			if let trans:SKPaymentTransaction = transaction as? SKPaymentTransaction {
+		for transaction: AnyObject in transactions {
+			if let trans: SKPaymentTransaction = transaction as? SKPaymentTransaction {
 				switch trans.transactionState {
 				case .Purchased:
 					println("Product Purchased")

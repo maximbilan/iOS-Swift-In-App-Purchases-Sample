@@ -20,6 +20,16 @@ class ViewController: UIViewController {
 		// Dispose of any resources that can be recreated.
 	}
 
+	@IBAction func unlockTestInAppPurchase1(sender: UIButton) {
+		InAppPurchase.sharedInstance.buyUnlockTestInAppPurchase1()
+	}
 
+	@IBAction func unlockTestInAppPurchase2(sender: UIButton) {
+	}
+	
+	@IBAction func restorePurchases(sender: UIButton) {
+		InAppPurchase.sharedInstance.restoreTransactions()
+	}
+	
 }
 

@@ -16,8 +16,8 @@ class InAppPurchase : NSObject, SKProductsRequestDelegate, SKPaymentTransactionO
 	let kInAppProductRestoredNotification  = "InAppProductRestoredNotification"
 	let kInAppPurchasingErrorNotification  = "InAppPurchasingErrorNotification"
 	
-	var unlockTestInAppPurchase1ProductId = "com.testing.iap1"
-	var unlockTestInAppPurchase2ProductId = "com.testing.iap2"
+	let unlockTestInAppPurchase1ProductId = "com.testing.iap1"
+	let unlockTestInAppPurchase2ProductId = "com.testing.iap2"
 	
 	class var sharedInstance : InAppPurchase {
 		struct Static {

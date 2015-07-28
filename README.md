@@ -4,9 +4,8 @@ I would like to tell how to create simple application with in-app-purchases usin
 
 First of all you need to create product IDs in iTunes Connect for your application.
 
-img1
-
-img2
+![alt tag](https://raw.github.com/maximbilan/ios_swift_in_app_purchases_sample/master/img/img1.png)
+![alt tag](https://raw.github.com/maximbilan/ios_swift_in_app_purchases_sample/master/img/img2.png)
 
 Lets create class <i>InAppPurchase</i>. Inherited from the following protocols:
 
@@ -124,9 +123,9 @@ SKPaymentQueue.defaultQueue().finishTransaction(transaction as! SKPaymentTransac
 
 If you did everything right, you should see the similar:
 
-img3
-img4
-img5
+![alt tag](https://raw.github.com/maximbilan/ios_swift_in_app_purchases_sample/master/img/img3.png)
+![alt tag](https://raw.github.com/maximbilan/ios_swift_in_app_purchases_sample/master/img/img4.png)
+![alt tag](https://raw.github.com/maximbilan/ios_swift_in_app_purchases_sample/master/img/img5.png)
 
 For testing the app, please use sandbox accounts, which you can create in iTunes Connect.
 

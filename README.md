@@ -103,15 +103,15 @@ func paymentQueue(queue: SKPaymentQueue!, updatedTransactions transactions: [Any
         if let trans: SKPaymentTransaction = transaction as? SKPaymentTransaction {
             switch trans.transactionState {
                 case .Purchased:
-SKPaymentQueue.defaultQueue().finishTransaction(transaction as! SKPaymentTransaction)
+                    SKPaymentQueue.defaultQueue().finishTransaction(transaction as! SKPaymentTransaction)
                 break
  
                 case .Failed:
-SKPaymentQueue.defaultQueue().finishTransaction(transaction as! SKPaymentTransaction)
+                    SKPaymentQueue.defaultQueue().finishTransaction(transaction as! SKPaymentTransaction)
                 break
 
                 case .Restored:
-SKPaymentQueue.defaultQueue().finishTransaction(transaction as! SKPaymentTransaction)
+                    SKPaymentQueue.defaultQueue().finishTransaction(transaction as! SKPaymentTransaction)
                 break
            
                 default:

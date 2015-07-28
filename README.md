@@ -1,8 +1,8 @@
 # iOS Swift In-App-Purchases
 
-I would like to tell how to create simple application with in-app-purchases using Swift.
+I would like to tell how to create simple application with in-app-purchases using <i>Swift</i>.
 
-First of all you need to create product IDs in iTunes Connect for your application.
+First of all you need to create product IDs in <a href="http://itunesconnect.apple.com">iTunes Connect</a> for your application.
 
 ![alt tag](https://raw.github.com/maximbilan/ios_swift_in_app_purchases_sample/master/img/img1.png)
 ![alt tag](https://raw.github.com/maximbilan/ios_swift_in_app_purchases_sample/master/img/img2.png)
@@ -127,8 +127,8 @@ If you did everything right, you should see the similar:
 ![alt tag](https://raw.github.com/maximbilan/ios_swift_in_app_purchases_sample/master/img/img4.png)
 ![alt tag](https://raw.github.com/maximbilan/ios_swift_in_app_purchases_sample/master/img/img5.png)
 
-For testing the app, please use sandbox accounts, which you can create in iTunes Connect.
+For testing the app, please use sandbox accounts, which you can create in <a href="http://itunesconnect.apple.com">iTunes Connect</a>.
 
-For updating UI in your application in the example I use notifications, and for checking if already unlocked purchases or not, I use NSUserDefaults.
+For updating UI in your application in the example I use notifications, and for checking if already unlocked purchases or not, I use <i>NSUserDefaults</i>.
 
 Please see full sample in this repository, feel free to use and don’t forget to like the repository :) Thanks for attention.

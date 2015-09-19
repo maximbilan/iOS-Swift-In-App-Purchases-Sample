@@ -37,8 +37,8 @@ class InAppPurchase : NSObject, SKProductsRequestDelegate, SKPaymentTransactionO
 	}
 	
 	func buyProduct(product: SKProduct) {
-		println("Sending the Payment Request to Apple")
-		var payment = SKPayment(product: product)
+		print("Sending the Payment Request to Apple")
+		let payment = SKPayment(product: product)
 		SKPaymentQueue.defaultQueue().addPayment(payment)
 	}
 	
@@ -46,48 +46,48 @@ class InAppPurchase : NSObject, SKProductsRequestDelegate, SKPaymentTransactionO
 		SKPaymentQueue.defaultQueue().restoreCompletedTransactions()
 	}
 	
-	func request(request: SKRequest!, didFailWithError error: NSError!) {
-		println("Error %@ \(error)")
+	func request(request: SKRequest, didFailWithError error: NSError) {
+		print("Error %@ \(error)")
 		NSNotificationCenter.defaultCenter().postNotificationName(kInAppPurchasingErrorNotification, object: error.description)
 	}
 	
 	func productsRequest(request: SKProductsRequest, didReceiveResponse response: SKProductsResponse) {
-		println("Got the request from Apple")
-		var count: Int = response.products.count
+		print("Got the request from Apple")
+		let count: Int = response.products.count
 		if count > 0 {
-			var validProducts = response.products
-			var validProduct: SKProduct = response.products[0] as! SKProduct
-			println(validProduct.localizedTitle)
-			println(validProduct.localizedDescription)
-			println(validProduct.price)
+			_ = response.products
+			let validProduct: SKProduct = response.products[0] 
+			print(validProduct.localizedTitle)
+			print(validProduct.localizedDescription)
+			print(validProduct.price)
 			buyProduct(validProduct);
 		}
 		else {
-			println("No products")
+			print("No products")
 		}
 	}
 	
-	func paymentQueue(queue: SKPaymentQueue!, updatedTransactions transactions: [AnyObject]!) {
-		println("Received Payment Transaction Response from Apple");
+	func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+		print("Received Payment Transaction Response from Apple");
 		
 		for transaction: AnyObject in transactions {
 			if let trans: SKPaymentTransaction = transaction as? SKPaymentTransaction {
 				switch trans.transactionState {
 				case .Purchased:
-					println("Product Purchased")
+					print("Product Purchased")
 					savePurchasedProductIdentifier(trans.payment.productIdentifier)
 					SKPaymentQueue.defaultQueue().finishTransaction(transaction as! SKPaymentTransaction)
 					NSNotificationCenter.defaultCenter().postNotificationName(kInAppProductPurchasedNotification, object: nil)
 					break
 					
 				case .Failed:
-					println("Purchased Failed")
+					print("Purchased Failed")
 					SKPaymentQueue.defaultQueue().finishTransaction(transaction as! SKPaymentTransaction)
 					NSNotificationCenter.defaultCenter().postNotificationName(kInAppPurchaseFailedNotification, object: nil)
 					break
 					
 				case .Restored:
-					println("Product Restored")
+					print("Product Restored")
 					savePurchasedProductIdentifier(trans.payment.productIdentifier)
 					SKPaymentQueue.defaultQueue().finishTransaction(transaction as! SKPaymentTransaction)
 					NSNotificationCenter.defaultCenter().postNotificationName(kInAppProductRestoredNotification, object: nil)
@@ -107,14 +107,14 @@ class InAppPurchase : NSObject, SKProductsRequestDelegate, SKPaymentTransactionO
 	
 	func unlockProduct(productIdentifier: String!) {
 		if SKPaymentQueue.canMakePayments() {
-			var productID: NSSet = NSSet(object: productIdentifier)
-			var productsRequest: SKProductsRequest = SKProductsRequest(productIdentifiers: productID as Set<NSObject>)
+			let productID: NSSet = NSSet(object: productIdentifier)
+			let productsRequest: SKProductsRequest = SKProductsRequest(productIdentifiers: productID as! Set<String>)
 			productsRequest.delegate = self
 			productsRequest.start()
-			println("Fething Products")
+			print("Fething Products")
 		}
 		else {
-			println("Сan't make purchases")
+			print("Сan't make purchases")
 			NSNotificationCenter.defaultCenter().postNotificationName(kInAppPurchasingErrorNotification, object: NSLocalizedString("CANT_MAKE_PURCHASES", comment: "Can't make purchases"))
 		}
 	}

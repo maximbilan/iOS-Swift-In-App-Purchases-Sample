@@ -54,13 +54,13 @@ For starting of making purchase, we need to run product request:
 
 <pre>
 if SKPaymentQueue.canMakePayments() {
-    var productID: NSSet = NSSet(object: productIdentifier)
-    var productsRequest: SKProductsRequest = SKProductsRequest(productIdentifiers: productID as Set<NSObject>)
+    let productID: NSSet = NSSet(object: productIdentifier)
+    let productsRequest: SKProductsRequest = SKProductsRequest(productIdentifiers: productID as! Set<String>)
     productsRequest.delegate = self
     productsRequest.start()
 }
 else {
-    println(“Сan’t make purchases”)
+    print(“Сan’t make purchases”)
 }
 </pre>
 
@@ -70,12 +70,11 @@ After that if success, will be called:
 func productsRequest(request: SKProductsRequest, didReceiveResponse response: SKProductsResponse) {
     var count: Int = response.products.count
     if count > 0 {
-        var validProducts = response.products
-        var validProduct: SKProduct = response.products[0] as! SKProduct
+        let validProduct: SKProduct = response.products[0] as! SKProduct
         buyProduct(validProduct)
     }
     else {
-        println(“No products”)
+        print(“No products”)
     }
 }
 </pre>
@@ -84,14 +83,14 @@ If error:
 
 <pre>
 func request(request: SKRequest!, didFailWithError error: NSError!) {
-    println("Error %@ \(error)")
+    print("Error %@ \(error)")
 }
 </pre>
 
 In the <i>buyProduct</i> method we need to add payment to payment queue:
 
 <pre>
-var payment = SKPayment(product: product)
+let payment = SKPayment(product: product)
 SKPaymentQueue.defaultQueue().addPayment(payment)
 </pre>
 

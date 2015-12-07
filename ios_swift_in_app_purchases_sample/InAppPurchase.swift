@@ -1,4 +1,4 @@
-//
+ //
 //  InAppPurchase.swift
 //  ios_swift_in_app_purchases_sample
 //
@@ -77,9 +77,13 @@ class InAppPurchase : NSObject, SKProductsRequestDelegate, SKPaymentTransactionO
 				switch trans.transactionState {
 				case .Purchased:
 					print("Product Purchased")
+					
 					savePurchasedProductIdentifier(trans.payment.productIdentifier)
 					SKPaymentQueue.defaultQueue().finishTransaction(transaction as! SKPaymentTransaction)
 					NSNotificationCenter.defaultCenter().postNotificationName(kInAppProductPurchasedNotification, object: nil)
+					
+					receiptValidation()
+					
 					break
 					
 				case .Failed:
@@ -99,12 +103,106 @@ class InAppPurchase : NSObject, SKProductsRequestDelegate, SKPaymentTransactionO
 					break
 				}
 			}
+			else {
+				
+			}
 		}
+		
+//		if let trans:SKPaymentTransaction = transaction as? SKPaymentTransaction {
+//			
+//			switch trans.transactionState {
+//			case .Purchased:
+//				SKPaymentQueue.defaultQueue().finishTransaction(trans)
+//				if let receiptURL = NSBundle.mainBundle().appStoreReceiptURL where
+//					
+//					NSFileManager.defaultManager().fileExistsAtPath(receiptURL.path!)
+//				{
+//					if let purchaseSuccessCallback = purchaseCompleted {
+//						
+//						purchaseSuccessCallback(true, nil)
+//						
+//					}
+//					
+//					self.isPurchasing = false
+//					self.receiptValidation()
+//				} else {
+//					
+//					if !isRefreshingReceipt {
+//						
+//						self.isPurchasing = false
+//						isRefreshingReceipt = true
+//						let request = SKReceiptRefreshRequest(receiptProperties: nil)
+//						request.delegate = self
+//						request.start()
+//						
+//						if let _ = purchaseCompleted {
+//							
+//							purchaseCompleted**(true, nil)
+//						}
+//					}
+//				}
+//				
+//				break
+//			}
+//		}
 	}
 	
 	func savePurchasedProductIdentifier(productIdentifier: String!) {
 		NSUserDefaults.standardUserDefaults().setObject(productIdentifier, forKey: productIdentifier)
 		NSUserDefaults.standardUserDefaults().synchronize()
+	}
+	
+	func receiptValidation() {
+		
+		let receiptFileURL = NSBundle.mainBundle().appStoreReceiptURL
+		let receiptData = NSData(contentsOfURL: receiptFileURL!)
+		let recieptString = receiptData?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+		let jsonDict: [String: AnyObject] = ["receipt-data" : recieptString!, "password" : "dab3f8e770384d99ae7dda0096529a30"]
+		
+		do {
+			let requestData = try NSJSONSerialization.dataWithJSONObject(jsonDict, options: NSJSONWritingOptions.PrettyPrinted)
+			
+			let storeURL = NSURL(string: "https://sandbox.itunes.apple.com/verifyReceipt")!
+			let storeRequest = NSMutableURLRequest(URL: storeURL)
+			storeRequest.HTTPMethod = "POST"
+			storeRequest.HTTPBody = requestData
+			
+			let session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+			let task = session.dataTaskWithRequest(storeRequest, completionHandler: { (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
+				do {
+					let jsonResponse = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers)
+					print(jsonResponse)
+					if let date = self.getExpirationDateFromResponse(jsonResponse as! NSDictionary) {
+						print(date)
+					}
+				} catch let parseError {
+					print(parseError)
+				}
+			})
+			task.resume()
+		} catch let parseError {
+			print(parseError)
+		}
+	}
+	
+	func getExpirationDateFromResponse(jsonResponse: NSDictionary) -> NSDate? {
+		
+		if let receiptInfo: NSArray = jsonResponse["latest_receipt_info"] as? NSArray {
+
+			let lastReceipt = receiptInfo.lastObject as! NSDictionary
+			let formatter = NSDateFormatter()
+			formatter.dateFormat = "yyyy-MM-dd HH:mm:ss VV"
+			
+			if let expiresDate = lastReceipt["expires_date"] as? String {
+				let expirationDate: NSDate = formatter.dateFromString(expiresDate) as NSDate!
+				return expirationDate
+			}
+			
+			return nil
+		}
+		else {
+			return nil
+		}
 	}
 	
 	func unlockProduct(productIdentifier: String!) {

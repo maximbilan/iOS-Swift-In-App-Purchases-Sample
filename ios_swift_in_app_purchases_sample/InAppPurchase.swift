@@ -19,6 +19,9 @@ class InAppPurchase : NSObject, SKProductsRequestDelegate, SKPaymentTransactionO
 	let unlockTestInAppPurchase1ProductId = "com.testing.iap1"
 	let unlockTestInAppPurchase2ProductId = "com.testing.iap2"
 	
+	//com.testing.autorenewablesubscription
+	//com.testing.nonrenewingsubscription
+	
 	class var sharedInstance : InAppPurchase {
 		struct Static {
 			static var onceToken: dispatch_once_t = 0

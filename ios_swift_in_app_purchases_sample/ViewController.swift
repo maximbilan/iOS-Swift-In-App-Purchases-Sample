@@ -28,6 +28,12 @@ class ViewController: UIViewController {
 		InAppPurchase.sharedInstance.buyUnlockTestInAppPurchase2()
 	}
 	
+	@IBAction func autorenewableSubscription(sender: UIButton) {
+	}
+	
+	@IBAction func nonrenewingSubscription(sender: UIButton) {
+	}
+	
 	@IBAction func restorePurchases(sender: UIButton) {
 		InAppPurchase.sharedInstance.restoreTransactions()
 	}

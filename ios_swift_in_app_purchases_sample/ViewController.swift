@@ -29,9 +29,11 @@ class ViewController: UIViewController {
 	}
 	
 	@IBAction func autorenewableSubscription(sender: UIButton) {
+		InAppPurchase.sharedInstance.buyAutorenewableSubscription()
 	}
 	
 	@IBAction func nonrenewingSubscription(sender: UIButton) {
+		InAppPurchase.sharedInstance.buyNonrenewingSubscription()
 	}
 	
 	@IBAction func restorePurchases(sender: UIButton) {

@@ -18,9 +18,8 @@ class InAppPurchase : NSObject, SKProductsRequestDelegate, SKPaymentTransactionO
 	
 	let unlockTestInAppPurchase1ProductId = "com.testing.iap1"
 	let unlockTestInAppPurchase2ProductId = "com.testing.iap2"
-	
-	//com.testing.autorenewablesubscription
-	//com.testing.nonrenewingsubscription
+	let autorenewableSubscriptionProductId = "com.testing.autorenewablesubscription"
+	let nonrenewingSubscriptionProductId = "com.testing.nonrenewingsubscription"
 	
 	class var sharedInstance : InAppPurchase {
 		struct Static {
@@ -129,4 +128,13 @@ class InAppPurchase : NSObject, SKProductsRequestDelegate, SKPaymentTransactionO
 	func buyUnlockTestInAppPurchase2() {
 		unlockProduct(unlockTestInAppPurchase2ProductId)
 	}
+
+	func buyAutorenewableSubscription() {
+		unlockProduct(autorenewableSubscriptionProductId)
+	}
+	
+	func buyNonrenewingSubscription() {
+		unlockProduct(nonrenewingSubscriptionProductId)
+	}
+	
 }

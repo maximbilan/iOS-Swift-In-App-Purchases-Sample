@@ -107,44 +107,6 @@ class InAppPurchase : NSObject, SKProductsRequestDelegate, SKPaymentTransactionO
 				
 			}
 		}
-		
-//		if let trans:SKPaymentTransaction = transaction as? SKPaymentTransaction {
-//			
-//			switch trans.transactionState {
-//			case .Purchased:
-//				SKPaymentQueue.defaultQueue().finishTransaction(trans)
-//				if let receiptURL = NSBundle.mainBundle().appStoreReceiptURL where
-//					
-//					NSFileManager.defaultManager().fileExistsAtPath(receiptURL.path!)
-//				{
-//					if let purchaseSuccessCallback = purchaseCompleted {
-//						
-//						purchaseSuccessCallback(true, nil)
-//						
-//					}
-//					
-//					self.isPurchasing = false
-//					self.receiptValidation()
-//				} else {
-//					
-//					if !isRefreshingReceipt {
-//						
-//						self.isPurchasing = false
-//						isRefreshingReceipt = true
-//						let request = SKReceiptRefreshRequest(receiptProperties: nil)
-//						request.delegate = self
-//						request.start()
-//						
-//						if let _ = purchaseCompleted {
-//							
-//							purchaseCompleted**(true, nil)
-//						}
-//					}
-//				}
-//				
-//				break
-//			}
-//		}
 	}
 	
 	func savePurchasedProductIdentifier(productIdentifier: String!) {

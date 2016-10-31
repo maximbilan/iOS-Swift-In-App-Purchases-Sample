@@ -20,23 +20,23 @@ class ViewController: UIViewController {
 		// Dispose of any resources that can be recreated.
 	}
 
-	@IBAction func unlockTestInAppPurchase1(sender: UIButton) {
+	@IBAction func unlockTestInAppPurchase1(_ sender: UIButton) {
 		InAppPurchase.sharedInstance.buyUnlockTestInAppPurchase1()
 	}
 
-	@IBAction func unlockTestInAppPurchase2(sender: UIButton) {
+	@IBAction func unlockTestInAppPurchase2(_ sender: UIButton) {
 		InAppPurchase.sharedInstance.buyUnlockTestInAppPurchase2()
 	}
 	
-	@IBAction func autorenewableSubscription(sender: UIButton) {
+	@IBAction func autorenewableSubscription(_ sender: UIButton) {
 		InAppPurchase.sharedInstance.buyAutorenewableSubscription()
 	}
 	
-	@IBAction func nonrenewingSubscription(sender: UIButton) {
+	@IBAction func nonrenewingSubscription(_ sender: UIButton) {
 		InAppPurchase.sharedInstance.buyNonrenewingSubscription()
 	}
 	
-	@IBAction func restorePurchases(sender: UIButton) {
+	@IBAction func restorePurchases(_ sender: UIButton) {
 		InAppPurchase.sharedInstance.restoreTransactions()
 	}
 	

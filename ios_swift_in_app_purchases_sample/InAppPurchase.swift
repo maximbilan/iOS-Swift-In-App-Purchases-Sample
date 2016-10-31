@@ -11,9 +11,13 @@ import StoreKit
 
 class InAppPurchase : NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver {
 	
-	private static var __once: () = {
-			Static.instance = InAppPurchase()
-		}()
+	static let sharedInstance = InAppPurchase()
+	
+#if DEBUG
+	let verifyReceiptURL = "https://sandbox.itunes.apple.com/verifyReceipt"
+#else
+	let verifyReceiptURL = "https://buy.itunes.apple.com/verifyReceipt"
+#endif
 	
 	let kInAppProductPurchasedNotification = "InAppProductPurchasedNotification"
 	let kInAppPurchaseFailedNotification   = "InAppPurchaseFailedNotification"
@@ -24,15 +28,6 @@ class InAppPurchase : NSObject, SKProductsRequestDelegate, SKPaymentTransactionO
 	let unlockTestInAppPurchase2ProductId = "com.testing.iap2"
 	let autorenewableSubscriptionProductId = "com.testing.autorenewablesubscription"
 	let nonrenewingSubscriptionProductId = "com.testing.nonrenewingsubscription"
-	
-	class var sharedInstance : InAppPurchase {
-		struct Static {
-			static var onceToken: Int = 0
-			static var instance: InAppPurchase? = nil
-		}
-		_ = InAppPurchase.__once
-		return Static.instance!
-	}
 	
 	override init() {
 		super.init()
@@ -52,7 +47,7 @@ class InAppPurchase : NSObject, SKProductsRequestDelegate, SKPaymentTransactionO
 	
 	func request(_ request: SKRequest, didFailWithError error: Error) {
 		print("Error %@ \(error)")
-		NotificationCenter.default.post(name: Notification.Name(rawValue: kInAppPurchasingErrorNotification), object: error.description)
+		NotificationCenter.default.post(name: Notification.Name(rawValue: kInAppPurchasingErrorNotification), object: error.localizedDescription)
 	}
 	
 	func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
@@ -125,18 +120,18 @@ class InAppPurchase : NSObject, SKProductsRequestDelegate, SKPaymentTransactionO
 		
 		do {
 			let requestData = try JSONSerialization.data(withJSONObject: jsonDict, options: JSONSerialization.WritingOptions.prettyPrinted)
-			
-			let storeURL = URL(string: "https://sandbox.itunes.apple.com/verifyReceipt")!
-			let storeRequest = NSMutableURLRequest(url: storeURL)
+			let storeURL = URL(string: verifyReceiptURL)!
+			var storeRequest = URLRequest(url: storeURL)
 			storeRequest.httpMethod = "POST"
 			storeRequest.httpBody = requestData
 			
 			let session = URLSession(configuration: URLSessionConfiguration.default)
-			let task = session.dataTask(with: storeRequest, completionHandler: { (data: Data?, response: URLResponse?, error: NSError?) -> Void in
+			let task = session.dataTask(with: storeRequest, completionHandler: { [weak self] (data, response, error) in
+
 				do {
 					let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers)
 					print(jsonResponse)
-					if let date = self.getExpirationDateFromResponse(jsonResponse as! NSDictionary) {
+					if let date = self?.getExpirationDateFromResponse(jsonResponse as! NSDictionary) {
 						print(date)
 					}
 				} catch let parseError {

@@ -2,7 +2,7 @@
 
 I would like to tell how to create simple application with in-app-purchases using <i>Swift</i>.
 
-First of all you need to create product IDs in <a href="http://itunesconnect.apple.com">iTunes Connect</a> for your application.
+First of all you need to create product IDs in <i><a href="http://itunesconnect.apple.com">iTunes Connect</a></i> for your application.
 
 ![alt tag](https://raw.github.com/maximbilan/ios_swift_in_app_purchases_sample/master/img/img2.png)
 ![alt tag](https://raw.github.com/maximbilan/ios_swift_in_app_purchases_sample/master/img/img1.png)

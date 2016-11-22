@@ -130,4 +130,4 @@ For testing the app, please use sandbox accounts, which you can create in <a hre
 
 For updating UI in your application in the example I use notifications, and for checking if already unlocked purchases or not, I use <i>NSUserDefaults</i>.
 
-Please see full sample in this repository, feel free to use and don’t forget to like the repository :) Thanks for attention.
+Please see the full sample in this repository, feel free to use and don’t forget to like the repository :) Thanks for attention.

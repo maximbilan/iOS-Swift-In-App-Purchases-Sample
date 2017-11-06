@@ -170,7 +170,7 @@ class InAppPurchase : NSObject, SKProductsRequestDelegate, SKPaymentTransactionO
 			let productsRequest: SKProductsRequest = SKProductsRequest(productIdentifiers: productID as! Set<String>)
 			productsRequest.delegate = self
 			productsRequest.start()
-			print("Fething Products")
+			print("Fetching Products")
 		}
 		else {
 			print("Сan't make purchases")

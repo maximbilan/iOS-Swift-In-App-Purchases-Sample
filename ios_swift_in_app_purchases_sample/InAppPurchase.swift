@@ -153,8 +153,7 @@ class InAppPurchase : NSObject, SKProductsRequestDelegate, SKPaymentTransactionO
 			formatter.dateFormat = "yyyy-MM-dd HH:mm:ss VV"
 			
 			if let expiresDate = lastReceipt["expires_date"] as? String {
-				let expirationDate: Date = formatter.date(from: expiresDate) as Date!
-				return expirationDate
+				return formatter.date(from: expiresDate)
 			}
 			
 			return nil

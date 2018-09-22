@@ -1,13 +1,13 @@
 # iOS Swift In-App-Purchases
 
-I would like to tell how to create simple application with in-app-purchases using <i>Swift</i>.
+I would like to tell how to create a simple application with in-app-purchases using <i>Swift</i>.
 
 First of all you need to create product IDs in <i><a href="http://itunesconnect.apple.com">iTunes Connect</a></i> for your application.
 
 ![alt tag](https://raw.github.com/maximbilan/ios_swift_in_app_purchases_sample/master/img/img2.png)
 ![alt tag](https://raw.github.com/maximbilan/ios_swift_in_app_purchases_sample/master/img/img1.png)
 
-Lets create class <i>InAppPurchase</i>. Inherited from the following protocols:
+Lets create a class <i>InAppPurchase</i>. Inherited from the following protocols:
 
 <pre>
 class InAppPurchase : NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver
@@ -44,13 +44,13 @@ let unlockTestInAppPurchase1ProductId = "com.testing.iap1"
 let unlockTestInAppPurchase2ProductId = "com.testing.iap2"
 </pre>
 
-In the initialization of class, we need to add observer:
+In the initialization of class, we need to add a observer:
 
 <pre>
 SKPaymentQueue.defaultQueue().addTransactionObserver(self)
 </pre>
 
-For starting of making purchase, we need to run product request:
+For starting of making purchase, we need to run a product request:
 
 <pre>
 if SKPaymentQueue.canMakePayments() {
@@ -64,7 +64,7 @@ else {
 }
 </pre>
 
-After that if success, will be called:
+After that if is it a success, will be called:
 
 <pre>
 func productsRequest(request: SKProductsRequest, didReceiveResponse response: SKProductsResponse) {
@@ -87,7 +87,7 @@ func request(request: SKRequest!, didFailWithError error: NSError!) {
 }
 </pre>
 
-In the <i>buyProduct</i> method we need to add payment to payment queue:
+In the <i>buyProduct</i> method we need to add a payment to payment queue:
 
 <pre>
 let payment = SKPayment(product: product)
